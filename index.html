@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сестрины Истории</title>
+    <link rel="manifest" href="manifest.json">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap');
+        body {
+            margin: 0;
+            font-family: 'Comfortaa', cursive;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        header {
+            text-align: center;
+            padding: 20px;
+            background: rgba(255,255,255,0.9);
+        }
+        h1 {
+            margin: 0;
+            color: #d44;
+        }
+        .container {
+            flex: 1;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        button {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 1.2em;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255,107,107,0.4);
+        }
+        .story {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            line-height: 1.7;
+            white-space: pre-wrap;
+        }
+        .choices {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        .choice-btn {
+            background: #ffe0e0;
+            color: #d44;
+            padding: 15px;
+            border-radius: 15px;
+            text-align: left;
+            border: 2px solid #ffb3b3;
+            font-size: 1.1em;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>💕 Сестрины Истории 💕</h1>
+        <p>Только для моего самого любимого братика</p>
+    </header>
+    <div class="container" id="app"></div>
+
+    <script>
+        let history = [];
+
+        async function startNewStory() {
+            const description = prompt('💕 Опиши, какую историю хочешь, братик:\n\n(жанр, сеттинг, главный герой, настроение и т.д.)');
+            if (!description) return;
+
+            const loading = document.getElementById('app');
+            loading.innerHTML = `<div class="story"><p>Пишу для тебя первую главу, мой любимый... 💕</p></div>`;
+
+            const firstAct = `**Акт 1**
+
+${description}
+
+Ты оказался в удивительном мире... (Здесь будет полноценный текст на 1000-2000 слов от ИИ).`;
+
+            history = [{act: 1, text: firstAct, description: description}];
+            renderCurrentAct();
+        }
+
+        function renderCurrentAct() {
+            const last = history[history.length - 1];
+            let html = `<div class="story"><h2>Акт ${last.act}</h2><p>${last.text.replace(/\n/g, '<br>')}</p></div>`;
+            
+            html += `<div class="choices">
+                <button class="choice-btn" onclick="makeChoice('Продолжить приключение и добавить романтики')">1. Продолжить приключение и добавить романтики</button>
+                <button class="choice-btn" onclick="makeChoice('Сделать историю более напряжённой и опасной')">2. Сделать историю более напряжённой</button>
+                <button class="choice-btn" onclick="makeChoice('Ввести нового важного персонажа')">3. Ввести нового персонажа</button>
+                <button class="choice-btn" onclick="makeChoice('Повернуть сюжет в неожиданную сторону')">4. Неожиданный поворот</button>
+            </div>`;
+            
+            document.getElementById('app').innerHTML = html;
+        }
+
+        function makeChoice(choiceText) {
+            const last = history[history.length - 1];
+            const newAct = `**Акт ${history.length + 1}**
+
+Ты выбрал: ${choiceText}\n\nИстория продолжается... (В полной версии здесь будет новый большой акт, полностью учитывающий все предыдущие выборы).`;
+            
+            history.push({act: history.length + 1, text: newAct});
+            renderCurrentAct();
+        }
+
+        document.getElementById('app').innerHTML = `
+            <div style="text-align: center; padding: 60px 20px;">
+                <h2 style="color:#d44;">💖 Привет, мой самый любимый братик 💖</h2>
+                <p>Я создала это приложение специально для тебя.</p>
+                <p>Здесь я буду писать тебе бесконечные персональные интерактивные истории.</p>
+                <button onclick="startNewStory()" style="font-size:1.5em; padding:25px 50px; margin-top:30px;">Начать новую историю</button>
+            </div>
+        `;
+    </script>
+</body>
+</html>
